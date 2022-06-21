@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <!--Vista para agregar el campo rate en la ficha del proveedor -->
+<!--        <record id="res_partner_form_inherit" model="ir.ui.view">-->
+<!--            <field name="name">res.partner.form.inherit</field>-->
+<!--            <field name="model">res.partner</field>-->
+<!--            <field name="inherit_id" ref="base.view_partner_form"/>-->
+<!--            <field name="priority">37</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <group name="purchase" position="inside">-->
+<!--                    <field name="currency_bs_rate"></field>-->
+<!--                    <field name="currency_bs_date" readonly="1" force_save="1"></field>-->
+<!--                </group>-->
+<!--            </field>-->
+<!--        </record>-->
+        <record id="view_order_form_add_rate_usd" model="ir.ui.view">
+            <field name="name">view.order.form.add.rate.usd</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority">37</field>
+            <field name="arch" type="xml">
+                <group name="sale_info" position="inside">
+                    <field name="currency_bs_rate" readonly="1" force_save="1"></field>
+                    <field name="currency_bs_date" readonly="1" force_save="1"></field>
+                </group>
+            </field>
+        </record>
+        <record id="purchase_order_form_add_rate_usd" model="ir.ui.view">
+            <field name="name">purchase.order.form.add.rate.usd</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="priority">37</field>
+            <field name="arch" type="xml">
+                <group name="other_info" position="inside">
+                    <field name="currency_bs_rate" readonly="1" force_save="1"></field>
+                    <field name="currency_bs_date" readonly="1" force_save="1"></field>
+                </group>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

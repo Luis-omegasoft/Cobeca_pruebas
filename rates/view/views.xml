@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_product_new_id" model="ir.ui.view">
+            <field name="name">Ocultar el widget de Tasas en el formulario de Monedas</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <!-- Se oculta la columna de la tasa -->
+                <xpath expr="//field[@name='rate']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- Se crea una nueva columna de tasa almacenada en el modelo -->
+                <xpath expr="//field[@name='rate']" position="after">
+                    <field name="new_rate" digits="[12,6]" readonly="True"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--Vista para crear columna de descripcion a la vista tree de tasas -->
+        <record id="view_rates_new_field" model="ir.ui.view">
+            <field name="name">Agregar columna de descripcion a las tasas</field>
+            <field name="model">res.currency.rate</field>
+            <field name="inherit_id" ref="base.view_currency_rate_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rate']" position="after">
+                    <field name="description_rate"/>
+                </xpath>
+                <xpath expr="//field[@name='rate']" position="before">
+                    <field name="rate_divided" string="Tasa"/>
+                </xpath>
+                <xpath expr="//field[@name='rate']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Vista para ocultar la columna de la tasa en la vista tree de monedas y agregar la nueva columna -->
+        <record id="view_hide_and_add_new_rate" model="ir.ui.view">
+            <field name="name">Reemplazar la columna de tasa por una nueva</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rate']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='rate']" position="after">
+                     <field name="new_rate" digits="[12,6]" readonly="True"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

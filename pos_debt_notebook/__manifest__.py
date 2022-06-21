@@ -1,0 +1,32 @@
+
+{
+    "name": "POS: Prepaid credits",
+    "summary": "Creditos para clientes en POS",
+    "category": "Point Of Sale",
+    "images": ["images/debt_notebook.png"],
+    "version": "14.0",
+    "author": "Omegasoftve",
+    'website': "www.omegasoftve.com",
+    "depends": ["point_of_sale"],
+    "data": [
+        "security/pos_debt_notebook_security.xml",
+        "data/product.xml",
+        "views/pos_debt_report_view.xml",
+        "views.xml",
+        "views/pos_credit_update.xml",
+        "wizard/pos_credit_invoices_views.xml",
+        "wizard/pos_credit_company_invoices_views.xml",
+        "data.xml",
+        "security/ir.model.access.csv",
+    ],
+    "qweb": [
+        "static/src/xml/CreditNote.xml",
+        "static/src/xml/OrderReceipt.xml",
+        "static/src/xml/PaymentMethodButton.xml",
+        "static/src/xml/ReceiptScreen.xml",
+        "static/src/xml/pos.xml",
+    ],
+    "demo": ["data/demo.xml"],
+    "installable": True,
+    "uninstall_hook": "pre_uninstall",
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_wh_iva_inherit_view" model="ir.ui.view">
+            <field name="name">account.wh.iva.inherit.view</field>
+            <field name="model">account.wh.iva</field>
+            <field name="inherit_id" ref="withholding_iva.view_wh_iva_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="res_partner_email"
+                           readonly="True"
+                           widget="email"
+                           attrs="{'required': [('type', 'not in', ['out_invoice', 'out_refund', 'out_debit'])]}"
+                    />
+                    <field name="user_id"
+                           readonly="True"
+                           invisible="True"
+                    />
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

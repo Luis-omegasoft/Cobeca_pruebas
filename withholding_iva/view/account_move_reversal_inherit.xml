@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data>
+
+        <!--record id="wh_inv_supplier" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.wh.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_info']" position="after">
+                   <page string="Withholdings">
+                        <separator colspan="4" string="xsep"  name="xsep" invisible='1'/>
+                        <separator colspan="4"  name="vsep" />
+                        <separator colspan="4" string="isep" name="isep"/>
+                        <separator colspan="4" name="rsep" />
+                        <separator colspan="4" string="msep" invisible='1' name="msep" />
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="wh_inv_customer" model="ir.ui.view">
+            <field name="name">account.invoice.customer.wh.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='other_info']" position="after">
+                   <page string="Withholdings">
+                        <separator colspan="4" string="xsep"  name="xsep" invisible='1'/>
+                        <separator colspan="4"  name="vsep" />
+                        <separator colspan="4" string="isep" name="isep"/>
+                        <separator colspan="4"  name="rsep" />
+                        <separator colspan="4" string="msep" invisible='1' name="msep" />
+                    </page>
+                </xpath>
+            </field>
+        </record-->
+
+    <!--
+    =====================================================
+    Invoices Extension
+    =====================================================
+    -->
+        <!--field name="inherit_id" ref="l10n_ve_withholding_iva.wh_inv_customer"/-->
+
+        <record id="view_account_move_reversal_inherit" model="ir.ui.view">
+            <field name="name">account.move.reversal.form.inherit</field>
+            <field name="model">account.move.reversal</field>
+            <field name="inherit_id" ref="account.view_account_move_reversal"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='refund_method']" position="after">
+                    <group >
+                        <field name="nro_ctrl" attrs="{'invisible':[('refund_method', '=', 'refund')],'required':[('refund_method', '!=', 'refund')] }"/>
+                        <field name="supplier_invoice_number" attrs="{'invisible':[('refund_method', '=', 'refund')],'required':[('refund_method', '!=', 'refund')]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!--field name="inherit_id" ref="base_withholdings_iva.wh_inv_supplier"/-->
+<!--        <record id="account_invoice_wh_iva_supplier" model="ir.ui.view">-->
+<!--            <field name="name">account.invoice.wh.iva.supplier</field>-->
+<!--            <field name="model">account.invoice</field>-->
+<!--            <field name="inherit_id" ref="base_withholdings.wh_inv_supplier"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//separator[@name='isep']" position="after">-->
+<!--                    <newline/>-->
+<!--                    <group>-->
+<!--                        <group colspan="2">-->
+<!--                            <field name="wh_iva" string="Have this invoice been already VAT withheld?"/>-->
+<!--                            <field name="consolidate_vat_wh"/>-->
+<!--                            <field name="vat_apply" string="Exclude this document from VAT Withholding"/>-->
+<!--                        </group>-->
+<!--                        <newline/>-->
+<!--                        <group>-->
+<!--                            <field name="wh_iva_id" string="VAT Withholding Document"/>-->
+<!--                            <button name="%(action_wiz_vat_apply_wh)d" string="Change Vat Wh. Exclusion" type="action" class="oe_highlight" states="draft"/>-->
+<!--                        </group>-->
+<!--                        <label string="Administrative Ruling No. SNAT/2005/0056, Exclusions: Art. 3"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//separator[@name=&quot;isep&quot;]" position="attributes">-->
+<!--                    <attribute name="string">VAT Withholding</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="account_invoice_wh_iva_tree" model="ir.ui.view">
+            <field name="name">account.invoice.wh.iva.tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="wh_iva"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

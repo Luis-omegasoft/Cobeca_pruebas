@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    MoviTrack
+#    Copyright (C) 2020-TODAY MoviTrack.
+#    You can modify it under the terms of the GNU LESSER
+#    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
+#
+#    It is forbidden to publish, distribute, sublicense, or sell copies
+#    of the Software or modified copies of the Software.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
+#
+#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+#    GENERAL PUBLIC LICENSE (LGPL v3) along with this program.
+#    If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+from odoo import models, fields, api
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+    # Se crea dos campos para agregar a la ficha del cliente y proveedor las cuentas
+    # contables de anticipo a cliente y proveedor
+
+    @api.onchange('tipo_usuario')
+    def onchange_company_type(self):
+        if self.tipo_usuario == 'ambos':
+            self.es_cliente = True
+            self.es_proveedor = True
+            self.journal_advanced_id = self.env['account.journal'].search([('name', '=', 'Anticipo Ambos')])
+        elif self.tipo_usuario == 'cliente':
+            self.es_cliente = (self.tipo_usuario == 'cliente')
+            self.es_proveedor = (self.tipo_usuario == 'proveedor')
+            self.journal_advanced_id = self.env['account.journal'].search([('name', '=', 'Anticipo de Clientes')])
+        elif self.tipo_usuario == 'proveedor':
+            self.journal_advanced_id = self.env['account.journal'].search([('name', '=', 'Anticipo de Proveedores')])
+
+
+    es_cliente = fields.Boolean(string='Es un cliente', default=False,
+                                help="Chequea si el usuario es un cliente")
+    es_proveedor = fields.Boolean(string='Es un proveedor', default=False,
+                                  help="Chequeca si el usuario es Proveedor")
+    tipo_usuario = fields.Selection(string='Cliente o proveedor',
+                                    selection=[('cliente', 'Cliente'), ('proveedor', 'Proveedor'), ('ambos', 'Ambos')],
+                                     inverse='_write_cliente_type')
+    account_advance_payment_purchase_id = fields.Many2one('account.account','Cuenta de Anticipos de Compras')
+    account_advance_payment_sales_id = fields.Many2one('account.account','Cuenta de Anticipos de Ventas')
+    journal_advanced_id = fields.Many2one('account.journal', string='Diario de Anticipos', required=True)
+
+    def _write_cliente_type(self):
+        for partner in self:
+            if partner.tipo_usuario == 'ambos':
+                partner.es_cliente = True
+                partner.es_proveedor = True
+            else:
+                partner.es_cliente = partner.tipo_usuario == 'cliente'
+                partner.es_proveedor = partner.tipo_usuario == 'proveedor'
